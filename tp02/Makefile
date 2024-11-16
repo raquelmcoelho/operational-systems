@@ -1,7 +1,7 @@
 TARGET = main
 
 SRC_DIR = src
-OBJ_DIR = .
+OBJ_DIR = build
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
