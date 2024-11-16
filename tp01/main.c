@@ -1,55 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <unistd.h>
-#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include "iplot.h"
 
-void main()
-{
-    while (1)
-    {
+int main() {
+    double limit;
 
-        int B;
-        printf("Inserez le borne B pour visualiser le tracé de courbe:");
-        scanf("%d", &B);
+    while (1) {
+        printf("Enter the limit: ");
+        scanf("%lf", &limit);
 
-        char content[256];
-        snprintf(content, sizeof(content),
-                 "set samples 500\n"
-                 "set title \"Sinus cardinal\"\n"
-                 "set xlabel \"x\"\n"
-                 "set ylabel \"sin(x) / x\"\n"
-                 "set xrange [%d:%d]\n"
-                 "set border\n"
-                 "set grid\n"
-                 "plot sin(x)/x\n",
-                 B, B);
+        if (limit < 0) {
+            break;
+        }
 
-        // printf("B = %s\n", content);
+        writeFileContent(limit);
 
-        FILE *fptr;
-        fptr = fopen("commandes.gp", "rw");
-        fputs(content, fptr);
-        fclose(fptr);
-
-        pid_t p = fork();
-        if (p < 0)
-        {
-            perror("fork fail");
+        pid_t pid = fork();
+        if (pid == -1) {
+            perror("Error at fork");
             exit(1);
-        }
-        else if (p == 0)
-        {
-            // sleep(10);
-            printf("Hello from Child!\n");
-            fptr = fopen("commandes.gp", "rw");
-            execlp("gnuplot", "-persist", "commandes.gp", NULL);
-            fclose(fptr);
-        }
-        else
-        {
-            sleep(10);
-            kill(p, SIGKILL);
+        } else if (pid == 0) {
+            sleep(5); 
+            executeGnuplot();
+        } else {
+            wait(NULL);
         }
     }
+
+    return 0;
 }
