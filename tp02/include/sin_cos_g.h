@@ -10,10 +10,12 @@ typedef struct {
     char* commandeFileName;
 } Method;
 
-void main_();
-void fillValuesAtFile();
 void fillFileWith(Method method);
-void plotGnuplot();
+void fillCos();
+void fillSin();
+void fillValuesAtFile();
 void plot(Method method);
+void plotGnuplot();
+void writeAndPlot();
 
 #endif // SINCOSG_H

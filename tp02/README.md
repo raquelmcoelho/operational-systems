@@ -1,4 +1,4 @@
-# TP 01 - Génération de courbe
+# TP 02 - Génération Périodique de Données
 
 **Auteur**: Raquel Maciel Coelho de Sousa 
 **Turme**: 2026  
@@ -7,30 +7,24 @@
 
 ## Compilation
 
-Pour compiler le programme, assurez-vous d'être dans le dossier `tp01` et exécutez la commande suivante:
+Pour compiler le programme, assurez-vous d'être dans le dossier `tp02` et exécutez la commande suivante:
 
 ```bash
 make
 ```
 
-Cela générera un exécutable nommé `plot`.
+Cela générera un exécutable nommé `main`.
 
 ## Exécution
 
 Pour exécuter le programme, lancez simplement :
 
 ```bash
-./plot
+./main
 ```
 
-Suivez les instructions à l’écran pour entrer une borne pour l’intervalle d’affichage de la courbe.
+![](image.png)
 
-## Test
-
-1. Exécutez le programme `plot` en utilisant `./plot`.
-2. Entrez différentes valeurs de borne pour observer les graphiques générés par Gnuplot.
-3. Pour voir la couverture (overlay) des processus, ouvrez un autre terminal et lancez `htop`.
-4. Dans `htop`, filtrez les processus `iplot` et `gnuplot` pour observer leur comportement pendant l'exécution.
 
 ## Nettoyage
 
