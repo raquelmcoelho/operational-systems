@@ -1,4 +1,4 @@
-# TP 02 - Génération Périodique de Données
+# TP 03 - Criblage Par Processus Filtrants
 
 **Auteur**: Raquel Maciel Coelho de Sousa 
 **Turme**: 2026  
@@ -7,7 +7,7 @@
 
 ## Compilation
 
-Pour compiler le programme, assurez-vous d'être dans le dossier `tp02` et exécutez la commande suivante:
+Pour compiler le programme, assurez-vous d'être dans le dossier `tp03` et exécutez la commande suivante:
 
 ```bash
 make
