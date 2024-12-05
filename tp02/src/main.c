@@ -13,7 +13,6 @@ void question2() {
     writeAndPlot();
 }
 
-
 int main() {
     question2();
     return 0;
