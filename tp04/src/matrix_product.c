@@ -92,7 +92,12 @@ void multi_thread(matrix_t *m1, matrix_t *m2)
 
 	c_before = clock();
 	t_before = time(NULL);
-	product_matrix_thread(m1, m2, m3);
+	product_matrix_thread(args_t{
+			quadrant: 0,
+      m1: m1,
+      m2: m2,
+      answer: result
+  });
 	t_after = time(NULL);
 	c_after = clock();
 
@@ -112,34 +117,12 @@ void multi_thread(matrix_t *m1, matrix_t *m2)
 
 matrix_t *product_matrix_thread(void *args) 
 {
-	// pthread_create(pthread_t *thread,	
-	// const pthread_attr_t *attr,	
-	// void *(*start_routine)(void *),	
-	// void *arg);
 	// pthread_cancel(); pthread_exit();
-	// - pthread_join();
+	// pthread_join();
 	// pthread_self();
 	
 	unsigned int i;
 	unsigned int j;
-	matrix_t *result;
-
-
-
-	pthread_t threads[4];
-	for(int i = 0; i < 4; ++i) {
-		args_t filsArgs;
-		filsArgs.quadrant = i + 1;
-		filsArgs.m1 = m1
-		filsArgs.m2 = m2;
-		filsArgs.answer = result;
-		
-		pthread_create(threads[i],	
-			NULL,	
-			product_matrix_thread,	
-			args
-		);
-	}
 	
 	if (m1->columns != m2->rows) {
 		printf("Dimensions Error\n");
@@ -148,11 +131,23 @@ matrix_t *product_matrix_thread(void *args)
 
 	result = init_matrix(m1->rows, m2->columns, 0);
 
-	for (i = 0; i < result->columns; ++i) {
-		for (j = 0; j < result->rows; ++j) {
-			result->matrix[j][i] = product_case(j, i, m1, m2);
-		}
+	pthread_t threads[4];
+	for(int i = 0; i < 4; ++i) {
+		args_t args;
+		args.quadrant = i;
+		args.m1 = m1
+		args.m2 = m2;
+		args.answer = result;
+		
+		pthread_create(
+			threads[i],	
+			NULL,	
+			product_matrix_thread,	
+			(void *)args
+		);
 	}
+
+	pthread_join();
 
 	return result;
 }

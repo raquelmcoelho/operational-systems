@@ -27,16 +27,15 @@ typedef struct args_t {
 	 matrix_t *answer;	
 } args_t;	
 
-
+/* Multi thread functions */	
+void multi_thread(matrix_t *m1, matrix_t *m2);	
+void *product_matrix_thread(void *args);
 
 /* Mono thread functions */
 void mono_thread(matrix_t *m1, matrix_t *m2);
 matrix_t *product_matrix(matrix_t *m1, matrix_t *m2);
 double product_case(int r, int c, matrix_t *m1, matrix_t *m2);
 
-/* Multi thread functions */	
-void multi_thread(matrix_t *m1, matrix_t *m2);	
-void *product_matrix_thread(void *args);
 
 /* Utils matrix functions */
 void print_matrix(matrix_t *m);
