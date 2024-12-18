@@ -1,22 +1,23 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -ansi -pedantic -c
-LDFLAGS=-lpthread
-INCLUDE_PATH=./include
-SRC_PATH=./src
-CPPFLAGS=-I$(INCLUDE_PATH)
-OBJS=$(SRC_PATH)/main.o $(SRC_PATH)/matrix_product.o
-EXEC=./bin/matrix_product
+TARGET = main
 
-all: $(EXEC)
+SRC_DIR = src
+OBJ_DIR = build
 
-$(EXEC): $(OBJS)
-	$(CC) $^ -o $@ $(LDFLAGS)
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-$(SRC_PATH)/%.o: $(SRC_PATH)/%.c %.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) $< -o $@
+CC = gcc
+CFLAGS = -Wall -Wextra -Iinclude
+
+all:	$(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) -lm
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm $(SRC_PATH)/*.o
+	rm -f $(OBJ_DIR)/*.o $(TARGET)
 
-mrproper: clean
-	rm $(EXEC)
+.PHONY: all clean

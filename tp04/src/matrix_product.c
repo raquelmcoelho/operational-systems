@@ -16,6 +16,75 @@
 #include <assert.h>
 #include <matrix.h>
 
+/* Multi threads functions */
+void multi_threads(matrix_t *m1, matrix_t *m2) 
+{
+	clock_t c_before;
+	clock_t c_after;
+	time_t t_before;
+	time_t t_after;
+	matrix_t *m3;
+
+	c_before = clock();
+	t_before = time(NULL);
+	args_t args = {
+      .m1= m1,
+      .m2= m2,
+      .answer= m3
+  };
+	product_matrix_thread(args);
+	t_after = time(NULL);
+	c_after = clock();
+
+	if (PRINT) {
+		printf("\nProduct :\n");
+		print_matrix(m3);
+	}
+
+	printf("\nClock_t -> %5.3f ticks (%f seconds)\n",
+			 (float) (c_after - c_before),
+			 (double) (c_after - c_before) / CLOCKS_PER_SEC);
+	printf("Time_t  -> %5.3f seconds\n", difftime(t_after, t_before));
+
+	free_matrix(m3->matrix);
+	free(m3);
+}
+
+matrix_t *product_matrix_thread(args_t *args) 
+{	
+	unsigned int i;
+	unsigned int j;
+	
+	if (m1->columns != m2->rows) {
+		printf("Dimensions Error\n");
+		return NULL;
+	}
+
+	result = init_matrix(m1->rows, m2->columns, 0);
+
+	stepSize = m1.columns / NB_THREADS;
+	pthread_t threads[NB_THREADS];
+	for(int i = 0; i < NB_THREADS; ++i) {
+		args_t args {
+		.index = i,
+		.m1 = m1,
+		.m2 = m2,
+		.answer = result
+		};
+		
+		pthread_create(
+			threads[i],	
+			NULL,	
+			product_matrix_thread,	
+			(void *)args
+		);
+	}
+
+	pthread_join();
+
+	return result;
+}
+
 /* Mono thread functions */
 void mono_thread(matrix_t *m1, matrix_t *m2) 
 {
@@ -79,77 +148,6 @@ double product_case(int r, int c, matrix_t *m1, matrix_t *m2)
 	}
 
 	return tmp;
-}
-
-/* Multi threads functions */
-void multi_thread(matrix_t *m1, matrix_t *m2) 
-{
-	matrix_t *m3;
-	clock_t c_before;
-	clock_t c_after;
-	time_t t_before;
-	time_t t_after;
-
-	c_before = clock();
-	t_before = time(NULL);
-	product_matrix_thread(args_t{
-			quadrant: 0,
-      m1: m1,
-      m2: m2,
-      answer: result
-  });
-	t_after = time(NULL);
-	c_after = clock();
-
-	if (PRINT) {
-		printf("\nProduct :\n");
-		print_matrix(m3);
-	}
-
-	printf("\nClock_t -> %5.3f ticks (%f seconds)\n",
-			 (float) (c_after - c_before),
-			 (double) (c_after - c_before) / CLOCKS_PER_SEC);
-	printf("Time_t  -> %5.3f seconds\n", difftime(t_after, t_before));
-
-	free_matrix(m3->matrix);
-	free(m3);
-}
-
-matrix_t *product_matrix_thread(void *args) 
-{
-	// pthread_cancel(); pthread_exit();
-	// pthread_join();
-	// pthread_self();
-	
-	unsigned int i;
-	unsigned int j;
-	
-	if (m1->columns != m2->rows) {
-		printf("Dimensions Error\n");
-		return NULL;
-	}
-
-	result = init_matrix(m1->rows, m2->columns, 0);
-
-	pthread_t threads[4];
-	for(int i = 0; i < 4; ++i) {
-		args_t args;
-		args.quadrant = i;
-		args.m1 = m1
-		args.m2 = m2;
-		args.answer = result;
-		
-		pthread_create(
-			threads[i],	
-			NULL,	
-			product_matrix_thread,	
-			(void *)args
-		);
-	}
-
-	pthread_join();
-
-	return result;
 }
 
 

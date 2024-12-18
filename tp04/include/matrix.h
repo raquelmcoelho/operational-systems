@@ -12,6 +12,7 @@
 #define MATRIX_H
 
 #define SIZE 10
+#define NB_THREADS 4
 #define PRINT 1
 
 typedef struct matrix {
@@ -21,21 +22,22 @@ typedef struct matrix {
 } matrix_t;
 
 typedef struct args_t {	
-	int quadrant;	
-	 matrix_t *m1;	
-	 matrix_t *m2;	
-	 matrix_t *answer;	
+	int stepSize;
+	const unsigned int index;
+
+	matrix_t *m1;	
+	matrix_t *m2;	
+	matrix_t *answer;	
 } args_t;	
 
 /* Multi thread functions */	
-void multi_thread(matrix_t *m1, matrix_t *m2);	
-void *product_matrix_thread(void *args);
+void multi_threads(matrix_t *m1, matrix_t *m2);	
+void *product_matrix_thread(args_t *args);
 
 /* Mono thread functions */
 void mono_thread(matrix_t *m1, matrix_t *m2);
 matrix_t *product_matrix(matrix_t *m1, matrix_t *m2);
 double product_case(int r, int c, matrix_t *m1, matrix_t *m2);
-
 
 /* Utils matrix functions */
 void print_matrix(matrix_t *m);
